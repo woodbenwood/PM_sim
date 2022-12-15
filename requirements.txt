@@ -1,0 +1,12 @@
+Fortuna~=5.0.5
+#"~=" greater than or equal to IF compatible
+numpy
+pandas~=1.4.3
+scipy
+scikit-learn
+MonkeyScope
+#first param no paren, name (ie random_range) then all the params comma-separated
+#ie MonkeyScope.distribution_timer(Fortuna.canonical, post_processor=lambda x: int(x*10))
+#post_processor only useful if you have a floating pt output and you need to bin them.
+beautifulsoup4~=4.11.1
+# PocketMortys.apk
