@@ -22,14 +22,14 @@ class Morty:
 
     def __init__(self, atk=None, defense=None, spd=None, hp=None):
         # self.name = "Morty"
-        self.atk = atk or self.atk_default
-        self.defense = defense or self.defense_default
-        self.spd = spd or self.spd_default
-        self.hp = hp or self.hp_default
         self.atk_iv = random_range(1, 17)
         self.defense_iv = random_range(1, 17)
         self.spd_iv = random_range(1, 17)
         self.hp_iv = (self.atk_iv + self.defense_iv + self.spd_iv) // 3
+        self.atk = self.atk_default + self.atk_iv * 2 or self.atk_default
+        self.defense = self.defense_default + self.defense_iv * 2 or self.defense_default
+        self.spd = self.spd_default + self.spd_iv * 2 or self.spd_default
+        self.hp = self.hp_default + self.hp_iv * 2 or self.hp_default
 
     def __gt__(self, other):
         return self.hp > other.hp
@@ -37,10 +37,10 @@ class Morty:
     def __repr__(self):
         output = (
             f"\n{self.name}:",
-            f"HP(iv): {self.hp + self.hp_iv * 2} ({self.hp_iv})",
-            f"atk: {self.atk + self.atk_iv * 2} ({self.atk_iv})",
-            f"def: {self.defense + self.defense_iv * 2} ({self.defense_iv})",
-            f"spd: {self.spd + self.spd_iv * 2} ({self.spd_iv})"
+            f"HP(iv): {self.hp} ({self.hp_iv})",
+            f"atk: {self.atk} ({self.atk_iv})",
+            f"def: {self.defense} ({self.defense_iv})",
+            f"spd: {self.spd} ({self.spd_iv})"
         )
         return "\n".join(output)
 
