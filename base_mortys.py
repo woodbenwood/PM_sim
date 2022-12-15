@@ -5,31 +5,30 @@ from Fortuna import random_range
 Assumptions for earliest simulation playtesting purposes:
 - all Mortys are max level (100) and fully trained (have max Effort Values)
 - disobeying isn't a thing (Ricks/trainers are max level (50))
-- if we can't randomize IV's (Inherent Values,) set to max (16) but rn we can
 - buffs/debuffs assumed to be 0 for now (implementation tbd)
 - no perfect sim goes w/o poison and paralyze either, but this is no perfect sim (yet)
-- Fortuna's random_range is higher number exclusive, hence the +1 to each max stat.
+- Fortuna's random_range is higher number exclusive, hence range of iv's is 1-17
 - For min stats pre-ivs, an iv of 0 is assumed, which is impossible but temporary
 """
 
 
 class Morty:
     atk_default = 251
-    defense_default = 251
+    def_default = 251
     spd_default = 241
     hp_default = 356
     name = "Morty"
 
-    def __init__(self, atk=None, defense=None, spd=None, hp=None):
-        # self.name = "Morty"
-        self.atk_iv = random_range(1, 17)
-        self.defense_iv = random_range(1, 17)
-        self.spd_iv = random_range(1, 17)
-        self.hp_iv = (self.atk_iv + self.defense_iv + self.spd_iv) // 3
-        self.atk = self.atk_default + self.atk_iv * 2 or self.atk_default
-        self.defense = self.defense_default + self.defense_iv * 2 or self.defense_default
-        self.spd = self.spd_default + self.spd_iv * 2 or self.spd_default
-        self.hp = self.hp_default + self.hp_iv * 2 or self.hp_default
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        self.atk_iv = random_range(1, 17) or atk_iv
+        self.def_iv = random_range(1, 17) or def_iv
+        self.spd_iv = random_range(1, 17) or spd_iv
+        self.hp_iv = (self.atk_iv + self.def_iv + self.spd_iv) // 3 or hp_iv
+        self.atk = self.atk_default + self.atk_iv * 2 or self.atk_default or atk
+        self.defense = self.def_default + self.def_iv * 2 or self.def_default or defense
+        self.spd = self.spd_default + self.spd_iv * 2 or self.spd_default or spd
+        self.hp = self.hp_default + self.hp_iv * 2 or self.hp_default or hp
+        # not sure 3 'or' options is relevant ... but will await clarity and preserve for posterity
 
     def __gt__(self, other):
         return self.hp > other.hp
@@ -39,98 +38,109 @@ class Morty:
             f"\n{self.name}:",
             f"HP(iv): {self.hp} ({self.hp_iv})",
             f"atk: {self.atk} ({self.atk_iv})",
-            f"def: {self.defense} ({self.defense_iv})",
+            f"def: {self.defense} ({self.def_iv})",
             f"spd: {self.spd} ({self.spd_iv})"
         )
         return "\n".join(output)
 
 
 class Gotron(Morty):
-    def __init__(self, atk=311, defense=321, spd=391, hp=426):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Gotron Morty"
-        self.trivia = "I got nerfed!"
+    atk_default = 311
+    def_default = 321
+    spd_default = 391
+    hp_default = 426
+    name = "Gotron Morty"
+    trivia = "I got nerfed!"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class OGGotron(Gotron):
-    def __init__(self, atk=351, defense=341):
-        super().__init__(atk, defense)
-        self.name = "OG Gotron Morty"
-        self.trivia = "The Gotron Morty before it was nerfed, a real collector's item"
+    atk_default = 351
+    def_default = 341
+    name = "OG Gotron Morty"
+    trivia = "The Gotron Morty before it was nerfed, a real collector's item"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class Cubism(Morty):
-    def __init__(self, atk=321, defense=321, spd=331, hp=456):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Cubism Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 321
+    def_default = 321
+    spd_default = 331
+    hp_default = 456
+    name = "Cubism Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class SeasonFour(Morty):
-    def __init__(self, atk=341, defense=351, spd=301, hp=426):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Season 4 Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 341
+    def_default = 351
+    spd_default = 301
+    hp_default = 426
+    name = "Season 4 Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class Dragon(Morty):
-    def __init__(self, atk=371, defense=381, spd=331, hp=436):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Dragon Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 371
+    def_default = 381
+    spd_default = 331
+    hp_default = 436
+    name = "Dragon Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class FanDancer(Morty):
-    def __init__(self, atk=271, defense=281, spd=331, hp=416):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Fan Dancer Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 271
+    def_default = 281
+    spd_default = 331
+    hp_default = 416
+    name = "Fan Dancer Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class Wasp(Morty):
-    def __init__(self, atk=331, defense=291, spd=331, hp=396):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Wasp Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 331
+    def_default = 291
+    spd_default = 331
+    hp_default = 396
+    name = "Wasp Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class SuperSoldier(Morty):
-    def __init__(self, atk=321, defense=361, spd=321, hp=456):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Super Soldier Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 321
+    def_default = 361
+    spd_default = 321
+    hp_default = 456
+    name = "Super Soldier Morty"
+
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 class Glockenspiel(Morty):
-    def __init__(self, atk=301, defense=331, spd=311, hp=416):
-        super().__init__(atk, defense, spd, hp)
-        self.name = "Glockenspiel Morty"
-        self.hp = hp
-        self.atk = atk
-        self.defense = defense
-        self.spd = spd
+    atk_default = 301
+    def_default = 331
+    spd_default = 311
+    hp_default = 416
+    name = "Glockenspiel Morty"
 
-# Notes from Robert following the problematic Inheritance question in OH:
-# extract name, define as constant
-# use two different classes, one for default, one for the randomized, maybe it's good for a third that's customizable
+    def __init__(self, atk=None, defense=None, spd=None, hp=None, atk_iv=None, def_iv=None, spd_iv=None, hp_iv=None):
+        super().__init__(atk, defense, spd, hp, atk_iv, def_iv, spd_iv, hp_iv)
 
 
 if __name__ == '__main__':
