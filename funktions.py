@@ -1,6 +1,6 @@
 import random
 from base_mortys import *
-from Fortuna import percent_true
+# from Fortuna import percent_true
 # from morty_db import *
 
 
@@ -43,23 +43,16 @@ def roll_teams():
 
 def pick_a_winner(morty_a, morty_b):
     if morty_a.hp != morty_b.hp:
-        # __gt__ is wired up in Morty class to understand ">" is by HP
-        # but it's drawing from their default (minimum) values!
         winner = max(morty_a, morty_b)
         loser = min(morty_a, morty_b)
-    elif percent_true(50):
-        winner = morty_a
-        loser = morty_b
     else:
-        winner = morty_b
-        loser = morty_a
+        return f"\n{morty_a.name} draws {morty_b.name}, {morty_a.hp}:{morty_b.hp}!"
 
-    return f"\n{winner.name} defeats {loser.name} by {winner.hp}:{loser.hp}!"
+    return f"\n{winner.name} defeats {loser.name}, {winner.hp}:{loser.hp}!"
 
 
 def morty_war(team_a, team_b):
-    """this is scratch code, obviously violates DRY
-    Not sure how useful it is to clean up"""
+    # this is scratch code, obviously violates DRY. Not sure how useful it is to clean up
     count_a = 0
     count_b = 0
     battle_1 = pick_a_winner(team_a[0], team_b[0])
@@ -67,7 +60,6 @@ def morty_war(team_a, team_b):
         count_a += 1
     elif team_b[0].hp > team_a[0].hp:
         count_b += 1
-        # all we need here is to feed a count to the record string... 20 potentially bugged lines prob not worth it!
     battle_2 = pick_a_winner(team_a[1], team_b[1])
     if team_a[1].hp > team_b[1].hp:
         count_a += 1
@@ -109,28 +101,3 @@ if __name__ == '__main__':
     # print(random_winner)
     random_war = morty_war(random_teams[0], random_teams[1])
     print(random_war)
-
-
-#
-# class RandomTeam:
-#     def __init__(self, team):
-#         self.team_name =
-
-
-#
-# class PvpSim:
-#     def __init__(self, team_a, team_b):
-#         self.team_a = team_a
-#         self.team_b = team_b
-
-#
-# class CombatTurn(self, my_team, opp_team):
-#     def __init__(self):
-#         self.my_team = []
-#         self.opp_team =
-#
-#     def who_goes_first(self, my_spd, opp_spd):
-#         self.my_spd = my_team[0].self.spd
-#         self.opp_spd = opp_team[0].self.spd
-#
-#         return max(my_team[0].self.spd, opp_team[0].self.spd)
