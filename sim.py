@@ -9,49 +9,87 @@ Assumptions for earliest simulation playtesting purposes:
 
 import Fortuna
 
-from app.base_mortys import OG_Gotron, Cubism, Wasp
-from app.attacks import kick, erase, nibble
+from app.base_mortys import *
+# from app.attacks import *
+from funktions import RandomTeams, roll_teams
 
 
-def percent_to_hit(acc: int) -> float:
-    # ladies and gentlemen, my top-down design to turn an int into a float.
-    # Needs to pull acc from attack subclass
-    to_hit = acc
-    return float(to_hit)
+def take_input():
+    choice = input("What will you do? [a: Attack, s: Switch, r: Run]")
+
+    if choice == "a":
+        print("You chose Attack! Pick an Attack:")
+        return pick_attack()
+    elif choice == "s":
+        print("You chose Switch! But you only have one Morty right now!")
+        return take_input()
+    elif choice == "r":
+        print("You chose run. Are you sure?")
+        return make_sure()
+    else:
+        print("Try again. [a: Attack, s: Switch, r: Run]")
+        return take_input()
 
 
-def hit_or_miss(truth_factor, roll: float) -> bool:
-    truth_factor = percent_to_hit
-    result = Fortuna.percent_true(truth_factor=truth_factor)
-    return result
+def pick_attack():
+    gotron_attacks = ["Kick", "Protect", "Stare Down", "Combustion"]
+    choice2 = input(f"Which Attack? [1: {gotron_attacks[0]}, 2: {gotron_attacks[1]}, "
+                    f"3: {gotron_attacks[2]}, 4: {gotron_attacks[3]}]")
+    if choice2 == "1":
+        return print("Your OG Gotron uses Kick!")
+    elif choice2 == "2":
+        return print("Your OG Gotron uses Protect!")
+    elif choice2 == "3":
+        return print("Your OG Gotron uses Stare Down!")
+    elif choice2 == "4":
+        return print("Your OG Gotron uses Combustion!")
+    else:
+        return print("That's not a valid option. Try again."), pick_attack()
 
 
-class CombatUnit:
+def make_sure():
+    choice_run = input("Are you sure you want to run away? It's fine, there are no rewards. [Y: yes, N: no]")
+    if choice_run == "y":
+        return print("You ran away. Your multiplier has not been reset, bc there's no such thing.")
+    elif choice_run == "n":
+        return print("AttaMorty!"), take_input()
+    else:
+        return print("That's not a valid input. Enter y or n!")
+    
 
-    def __init__(self, name, team_a, team_b):
-        self.name = name
-        self.team_a = team_a
-        self.team_b = team_b
-        # show the "home" team as team_a, the opp's team as team_b
+def duel_prep(morty_a, morty_b):
+    if morty_a.spd > morty_b.spd:
+        first = morty_a
+    elif morty_b.spd > morty_a.spd:
+        first = morty_b
+    elif Fortuna.percent_true(50):
+        first = morty_a
+    else:
+        first = morty_b
+    return morty_a.spd, morty_b.spd, first
 
 
 def combat_prep(team_a, team_b):
-    first = max(team_a(Morty_1(spd)), team_b(Morty_1(spd)))
-    # in the case of a tie, it's a coin flip
-    last = min(team_a(Morty_1(spd)), team_b(Morty_1(spd)))
-    # TODO fix BUG: if tied, the coin flip could make the same Morty first AND last.
+    if team_a[0].spd > team_b[0].spd:
+        first = team_a[0]
+    elif team_b[0].spd > team_a[0].spd:
+        first = team_b[0]
+    elif Fortuna.percent_true(50):
+        first = team_a[0]
+    else:
+        first = team_b[0]
+    return team_a[0].spd, team_b[0].spd, first.name
 
 
-def combat_turn(first, last):
-    # needs to take input from both players, their choice of attack (randomize opp's if simmed)
-    first(atk)
-    # ugh too complicated. going to start with a duel
-
-
-def random_duel(morty_1: RandomMorty, morty_2: RandomMorty):
-    first = max((morty_1(spd)), (morty_2(spd)))
-    # ultimately takes input: players' choice of attack (randomize opp's if simmed)
-    attack = RandomMorty(proto_attack)
-    if morty_1(spd) == first:
-        attack.morty_1(atk)
-
+if __name__ == '__main__':
+    # random_teams = roll_teams()
+    # print(random_teams)
+    # initiative = combat_prep(random_teams[0], random_teams[1])
+    # print(initiative)
+    # random_OG_Gotron = OGGotron()
+    # random_OG_Gotron2 = OGGotron()
+    # print(random_OG_Gotron)
+    # print(random_OG_Gotron2)
+    # initiative = duel_prep(random_OG_Gotron, random_OG_Gotron2)
+    # print(initiative)
+    take_input()
