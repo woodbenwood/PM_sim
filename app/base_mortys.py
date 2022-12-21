@@ -39,8 +39,8 @@ class Morty:
             f"HP(iv): {self.hp} ({self.hp_iv})",
             f"atk: {self.atk} ({self.atk_iv})",
             f"def: {self.defense} ({self.def_iv})",
-            f"spd: {self.spd} ({self.spd_iv})"
-        )
+            f"spd: {self.spd} ({self.spd_iv})",
+            f"")
         return "\n".join(output)
 
 

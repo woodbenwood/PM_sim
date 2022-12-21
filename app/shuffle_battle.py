@@ -24,8 +24,14 @@ def flip_a_coin(player_1_name, player_2_name):
     else:
         won_coin_flip = player_2_name
         lost_coin_flip = player_1_name
-    return f"{won_coin_flip} won the coin toss! {won_coin_flip} picks 1st, 4th, 6th, 8th, and 10th. " \
-           f"They will win all speed ties! \n{lost_coin_flip} will pick 2nd, 3rd, 5th, 7th, and 9th."
+    return won_coin_flip, lost_coin_flip
+
+
+def reveal_coin_toss(player_1_name, player_2_name):
+    won_coin_flip, lost_coin_flip = flip_a_coin(player_1_name, player_2_name)
+    return (f"{won_coin_flip} won the coin toss! {won_coin_flip} picks 1st, 4th, 6th, 8th, and 10th. "
+            f"They will win all speed ties! \n{lost_coin_flip} will pick 2nd, 3rd, 5th, 7th, and 9th.",
+            won_coin_flip, lost_coin_flip)
 
 
 def roll_draft_teams():
@@ -46,23 +52,20 @@ def roll_draft_teams():
     draft_pool = zip(range(1, 11), morty_pool)
 
     return draft_pool
-    # i rrrrrrreally want \newlines after each of these Morty objects, but idk where to put them!
 
 
-def pick_a_morty():
+def pick_a_morty(won_coin_flip, lost_coin_flip, draft_pool):
     team_a = []
     team_b = []
-    pick_pool = roll_draft_teams()
     pick = input(f"{won_coin_flip}, pick your first Morty (by number): ")
-    # this is erroring here ^ now anyway
-    if pick == 1:
-        team_a.append(pick_pool[0])
+    if pick == "1":
+        team_a.append(next(draft_pool))
         # oops, can't slice a zip??
     else:
         print("Limited Functionality: Pick #1 for now plz")
     pick2 = input(f"{lost_coin_flip}, pick your first Morty (by number): ")
-    if pick2 == 2:
-        team_b.append(pick_pool[1])
+    if pick2 == "2":
+        team_b.append(next(draft_pool))
     else:
         print("Limited Functionality: Pick #2 for now plz")
     return team_a, team_b
@@ -70,8 +73,10 @@ def pick_a_morty():
 
 if __name__ == '__main__':
     player_1, player_2 = get_player_names()
-    print(flip_a_coin(player_1, player_2))
+    results, winner, loser = reveal_coin_toss(player_1, player_2)
+    print(results)
     print("\nBehold the Mortys!")
     roll_the_mortys = roll_draft_teams()
     print(*roll_the_mortys)
-    # print(pick_a_morty())
+    print(pick_a_morty(winner, loser, draft_pool=roll_the_mortys))
+    # i'm giving it these ^ as parameters for its inputs
