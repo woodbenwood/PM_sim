@@ -24,8 +24,8 @@ def flip_a_coin(player_1_name, player_2_name):
     else:
         won_coin_flip = player_2_name
         lost_coin_flip = player_1_name
-    return f"{won_coin_flip} picks 1st, 4th, 6th, 8th, and 10th. They will win all speed ties! " \
-           f"\n{lost_coin_flip} will pick 2nd, 3rd, 5th, 7th, and 9th."
+    return f"{won_coin_flip} won the coin toss! {won_coin_flip} picks 1st, 4th, 6th, 8th, and 10th. " \
+           f"They will win all speed ties! \n{lost_coin_flip} will pick 2nd, 3rd, 5th, 7th, and 9th."
 
 
 def roll_draft_teams():
@@ -74,4 +74,4 @@ if __name__ == '__main__':
     print("\nBehold the Mortys!")
     roll_the_mortys = roll_draft_teams()
     print(*roll_the_mortys)
-    print(pick_a_morty())
+    # print(pick_a_morty())
